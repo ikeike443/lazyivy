@@ -13,10 +13,19 @@ def searchr(soup,nowurl,querystring):
         msoup = BeautifulStoneSoup(urllib2.urlopen(nowurl+metadata["href"]))
         groupid = msoup.find("groupid")
         artifactid = msoup.find("artifactid")
-        for elem in msoup.findAll("version"):
-            asoup = BeautifulSoup(urllib2.urlopen(nowurl+elem.text+"/"))
-            for jarname in asoup.findAll("a",href=re.compile(elem.text+"\.jar$")):
-                print "%-25s" % jarname.text,groupid.text+":"+artifactid.text,"   ("+nowurl+elem.text+")"
+        vlist = msoup.findAll("version")
+        vlist.reverse()
+        count = 0
+        for elem in vlist:
+            count += 1
+            try:
+                asoup = BeautifulSoup(urllib2.urlopen(nowurl+elem.text+"/"))
+                for jarname in asoup.findAll("a",href=re.compile(elem.text+"\.jar$")):
+                    print "%-25s" % jarname.text,groupid.text+":"+artifactid.text,"   ("+nowurl+elem.text+")"
+            except:
+                print "%-25s" % "NotFound",groupid.text+":"+artifactid.text,"     ("+nowurl+elem.text+")"
+            if count == 3:
+                break
     else:
         aTag = soup.findAll("a",href=re.compile(".*"+querystring+".*"))
         if(aTag):
