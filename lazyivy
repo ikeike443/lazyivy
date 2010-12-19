@@ -54,7 +54,7 @@ if __name__ == "__main__":
              gid=options.gid+"/"
         else:
              gid=""
-        _mvnrepourl = "http://repo2.maven.org/maven2/"+gid
+        _mvnrepourl = "http://mvnrepository.com/search.html?query="+options.query
         try:
             doc = urllib2.urlopen(_mvnrepourl)
         except:
@@ -62,13 +62,15 @@ if __name__ == "__main__":
             doc = urllib2.urlopen(_mvnrepourl)
         soup = BeautifulSoup(doc)
         if(options.quick):
-            aTag = soup.findAll("a",href=re.compile(".*"+options.query+".*"))
-            if(aTag):
-                for attr in aTag:
+            result = soup.findAll("p")
+            if(result):
+                for attr in result:
                    # hsoup = BeautifulSoup(urllib2.urlopen(_mvnrepourl+attr["href"]))
                     print attr["href"]
         else:
-            searchr(soup,_mvnrepourl,options.query) 
+           rsdoc = [urllib2.urlopen("http://mvnrepository.com"+y["href"]) for y in [x.find("a") for x in soup.findAll("p",{"class":"result"})]]
+           print rsdoc
+            # searchr(soup,_mvnrepourl,options.query) 
     if options.artifact:
         print "not implement yet"
     if options.filename:
