@@ -32,7 +32,7 @@ def searchr(soup,nowurl,querystring):
             for attr in aTag:
                 hsoup = BeautifulSoup(urllib2.urlopen(nowurl+attr["href"]))
                 searchr(hsoup,nowurl+attr["href"],querystring)
-
+#TODO 
 if __name__ == "__main__":
     #parse args
     parser = optparse.OptionParser()
