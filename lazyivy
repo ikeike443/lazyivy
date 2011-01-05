@@ -69,7 +69,9 @@ if __name__ == "__main__":
                     print attr["href"]
         else:
            rsdoc = [urllib2.urlopen("http://mvnrepository.com"+y["href"]) for y in [x.find("a") for x in soup.findAll("p",{"class":"result"})]]
-           print rsdoc
+           for elem in rsdoc:
+               print BeautifulSoup(elem).findAll("p")
+           #print rsdoc
             # searchr(soup,_mvnrepourl,options.query) 
     if options.artifact:
         print "not implement yet"
